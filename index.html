@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <title>Barchart</title>
+    <script language="javascript" type="text/javascript" src="chart.min.js"></script>
+    <script language="javascript" type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script language="javascript" type="text/javascript" src="who-life-expectancy-by-country.js"></script>
+    <script>
+        $(document).ready(function () {
+            getData();
+        });
+        var gradient = ["#2A5783", "#336190", "#3C6B9E", "#4576AC", "#4E80BA", "#588BC7", "#6195D5", "#6AA0E3", "#73AAF1", "#7DB5FF"];
+        var dataSet = {
+            labels: []
+            , datasets: []
+        }
+
+        function getData() {
+            $.each(_data.data, function () {
+                dataSet.labels.push(this.Country);
+            })
+            dataSet.datasets.push({
+                label: "Life expectancy"
+                , data: getValue()
+                , backgroundColor: gradient
+                , hoverBackgroundColor: gradient
+            })
+            printData();
+        }
+
+        function getValue(){
+            var array = []
+            $.each(_data.data,function(){
+                array.push(this.Life_expectancy_at_birth);
+            })
+            return array
+        }
+        function printData() {
+            var MeSeContext = document.getElementById("MeSeStatusCanvas").getContext("2d");
+            var MeSeChart = new Chart(MeSeContext, {
+                type: 'horizontalBar'
+                , data: dataSet
+                , options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                min: 60
+                            }
+            }]
+                        , yAxes: [{
+                            stacked: true
+            }]
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+   <h2>Top 10 life expectancy in 2011</h2>
+    <canvas id="MeSeStatusCanvas"></canvas>
+    <script>
+    </script>
+</body>
+
+</html>
